@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import axios from "axios";
 
 const Form = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    imgURL: "",
+    username: "", // Updated to match the backend field name
+    img: "", // Updated to match the backend field name
     phoneNo: "",
     email: "",
     role: "",
-    gender: "", // Added gender field
+    bio: "", // Added bio field
+    gender: "",
+    age: "", // Added age field
   });
 
   const handleChange = (e) => {
@@ -18,16 +21,21 @@ const Form = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
+    try {
+      await axios.post("http://localhost:3000/get/register", formData);
+      alert("User registered successfully!");
+      location.reload();
+    } catch (err) {
+      console.error("Error registering user:", err);
+      alert("Failed to register user.");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 flex items-center justify-center">
       <form
-        method="POST"
-        action="/"
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-2xl shadow-2xl w-[600px] flex flex-col gap-6"
       >
@@ -35,13 +43,13 @@ const Form = () => {
           Registration Form
         </h1>
 
-        {/* Name Field */}
+        {/* Username Field */}
         <div className="flex flex-col">
-          <label className="text-lg font-medium text-gray-700">Name:</label>
+          <label className="text-lg font-medium text-gray-700">Username:</label>
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="username"
+            value={formData.username}
             onChange={handleChange}
             required
             className="p-3 mt-2 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -70,8 +78,8 @@ const Form = () => {
           <label className="text-lg font-medium text-gray-700">Image URL:</label>
           <input
             type="text"
-            name="imgURL"
-            value={formData.imgURL}
+            name="img"
+            value={formData.img}
             onChange={handleChange}
             required
             className="p-3 mt-2 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -111,6 +119,31 @@ const Form = () => {
             type="text"
             name="role"
             value={formData.role}
+            onChange={handleChange}
+            required
+            className="p-3 mt-2 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+
+        {/* Bio Field */}
+        <div className="flex flex-col">
+          <label className="text-lg font-medium text-gray-700">Bio:</label>
+          <textarea
+            name="bio"
+            value={formData.bio}
+            onChange={handleChange}
+            required
+            className="p-3 mt-2 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          ></textarea>
+        </div>
+
+        {/* Age Field */}
+        <div className="flex flex-col">
+          <label className="text-lg font-medium text-gray-700">Age:</label>
+          <input
+            type="number"
+            name="age"
+            value={formData.age}
             onChange={handleChange}
             required
             className="p-3 mt-2 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
