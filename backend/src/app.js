@@ -4,7 +4,7 @@ const app = express();
 
 
 app.use(express.urlencoded({ extended: true }));
-app.use("/",indexRouter);
+app.use("/get",indexRouter);
 
 
 module.exports = app;
